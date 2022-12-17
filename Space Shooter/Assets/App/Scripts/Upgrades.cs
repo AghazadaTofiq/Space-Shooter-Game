@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -17,14 +15,14 @@ public class Upgrades : MonoBehaviour
 
     private void Awake()
     {
-        movementPriceText.text = PlayerPrefs.GetInt("Movement Price").ToString();
-        shootingPriceText.text = PlayerPrefs.GetInt("Shooting Price").ToString();
+        movementPriceText.text = PlayerPrefs.GetInt("Movement Price", 300).ToString();
+        shootingPriceText.text = PlayerPrefs.GetInt("Shooting Price", 300).ToString();
         bank.text = "Bank: " + PlayerPrefs.GetInt("Cash").ToString();
     }
 
     public void FasterMovement()
     {
-        if (PlayerPrefs.GetInt("Cash") >= PlayerPrefs.GetInt("Movement Price",300))
+        if (PlayerPrefs.GetInt("Cash") >= PlayerPrefs.GetInt("Movement Price", 300))
         {
             PlayerPrefs.SetFloat("Speed", PlayerPrefs.GetFloat("Speed", speed) + 0.5f);
             PlayerPrefs.SetInt("Cash", PlayerPrefs.GetInt("Cash") - 300);

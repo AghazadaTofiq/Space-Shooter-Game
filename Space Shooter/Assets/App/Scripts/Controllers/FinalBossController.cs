@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +27,7 @@ public class FinalBossController : MonoBehaviour
 
         shootTimer += Time.fixedDeltaTime;
 
-        if (shootTimer > Random.Range(5, 10))
+        if (shootTimer > Random.Range(3, 6))
         {
             shootTimer = 0f;
 

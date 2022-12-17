@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenu : MonoBehaviour
@@ -13,17 +11,23 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject levels;
     [SerializeField] private GameObject credits;
     [SerializeField] private GameObject pause;
+    [SerializeField] private AudioSource playSound;
+    [SerializeField] private AudioSource menuSound;
 
     private void Start()
     {
+        playSound.Stop();
+        menuSound.Play();
         Time.timeScale = 0;
     }
 
     public void Play()
     {
+        menuSound.Stop();
         menu.SetActive(false);
         ui.SetActive(true);
         Time.timeScale = 1;
+        playSound.Play();
     }
 
     public void Instructions()
@@ -81,14 +85,18 @@ public class MainMenu : MonoBehaviour
 
     public void Pause()
     {
+        playSound.Stop();
         pause.SetActive(true);
         Time.timeScale = 0;
+        menuSound.Play();
     }
 
     public void Resume()
     {
+        menuSound.Stop();
         pause.SetActive(false);
         Time.timeScale = 1;
+        playSound.Play();
     }
 
     public void Menu()

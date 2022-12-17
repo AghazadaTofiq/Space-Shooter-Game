@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -11,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform muzzle;
     [SerializeField] private int lives = 3;
     [SerializeField] private TextMeshProUGUI livesLabel;
+    [SerializeField] public AudioSource shootMusic;
+    [SerializeField] public AudioClip shootSound;
 
     private Color playerColor = new Color();
     private Collider2D playerCollider = new Collider2D();
@@ -29,10 +30,10 @@ public class PlayerController : MonoBehaviour
 
         shootTimer += Time.fixedDeltaTime;
 
-        if (shootTimer > PlayerPrefs.GetFloat("Bullet", 3))
+        if (shootTimer > PlayerPrefs.GetFloat("Bullet", 2))
         {
             shootTimer = 0f;
-
+            shootMusic.PlayOneShot(shootSound);
             Instantiate(bulletPrefab, muzzle.position, Quaternion.identity);
         }
     }
