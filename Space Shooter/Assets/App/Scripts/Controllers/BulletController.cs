@@ -24,7 +24,8 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(gameObject.CompareTag("PlayerBullet") && other.CompareTag("EnemyBullet"))
+        if((gameObject.CompareTag("PlayerBullet") && other.CompareTag("EnemyBullet")) ||
+            (gameObject.CompareTag("PlayerBullet") && other.CompareTag("Meteors")))
         {
             Destroy(gameObject);
             Destroy(other.gameObject);

@@ -41,7 +41,6 @@ public class EnemyController : MonoBehaviour
 
             UIManager.Instance.score += Random.Range(3, 5);
             UIManager.Instance.scoreLabel.text = "Score: " + UIManager.Instance.score.ToString();
-            PlayerPrefs.SetInt("Cash", PlayerPrefs.GetInt("Cash", 0) + UIManager.Instance.score);
 
             if(PlayerPrefs.GetInt("HighScore")< UIManager.Instance.score)
             {
@@ -58,6 +57,7 @@ public class EnemyController : MonoBehaviour
                 UIManager.Instance.gameOver.SetActive(true);
                 UIManager.Instance.nextLevel.SetActive(true);
                 Time.timeScale = 0;
+                PlayerPrefs.SetInt("Cash", PlayerPrefs.GetInt("Cash", 0) + UIManager.Instance.score);
             }
         }
     }

@@ -10,6 +10,7 @@ public class MeteorSpawner : MonoBehaviour
 
     private Stack<GameObject> meteorPool = new Stack<GameObject>();
 
+    private GameObject meteorReserve;
     private GameObject meteor;
 
     void Start()
@@ -17,12 +18,6 @@ public class MeteorSpawner : MonoBehaviour
         StartCoroutine(SpawnMeteorWave());
 
         InvokeRepeating("CheckPool", 0, 0.05f);
-        InvokeRepeating("DestroySelf", 14, 10);
-    }
-
-    private void DestroySelf()
-    {
-        Destroy(meteor);
     }
 
     public IEnumerator SpawnMeteorWave()
@@ -32,16 +27,18 @@ public class MeteorSpawner : MonoBehaviour
         meteor.transform.position = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
         meteor.SetActive(true);
         yield return new WaitForSeconds(5f);
+        Destroy(meteor);
+        StartCoroutine(SpawnMeteorWave());
     }
 
     private void CheckPool()
     {
         if (meteorPool.Count < 100)
         {
-            meteor = Instantiate(meteorPrefabs[Random.Range(0, meteorPrefabs.Length)], transform);
+            meteorReserve = Instantiate(meteorPrefabs[Random.Range(0, meteorPrefabs.Length)], transform);
 
-            meteor.SetActive(false);
-            meteorPool.Push(meteor);
+            meteorReserve.SetActive(false);
+            meteorPool.Push(meteorReserve);
         }
     }
 }

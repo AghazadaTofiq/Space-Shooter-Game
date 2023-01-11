@@ -8,13 +8,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private int enemyCount;
 
-    private List<GameObject> spawnedEnemies = new List<GameObject>();
     private Stack<GameObject> enemyPool = new Stack<GameObject>();
-
     private List<int> spawnedPoints = new List<int>();
+
     private int columnCount;
     private int randomEnemy;
     private int randomSpawnPoint;
+
     private GameObject enemy;
 
     void Start()

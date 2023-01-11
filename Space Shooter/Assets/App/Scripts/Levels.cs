@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -16,17 +14,24 @@ public class Levels : MonoBehaviour
 
     private void Start()
     {
-        PlayerPrefs.SetString("0", "UnLocked");
+        PlayerPrefs.SetString("0", "Unlocked");
 
         for (int i = 0; i < lockImages.Length; i++)
         {
-            if (PlayerPrefs.GetString($"{SceneManager.GetActiveScene().buildIndex + i}", "Locked") == "Unlocked")
+            if (PlayerPrefs.HasKey($"{0 + i}"))
             {
-                lockImages[i].enabled = false;
+                if (PlayerPrefs.GetString($"{0 + i}") == "Unlocked")
+                {
+                    lockImages[i].enabled = false;
+                }
+                else
+                {
+                    lockImages[i].enabled = true;
+                }
             }
             else
             {
-                lockImages[i].enabled = true;
+                PlayerPrefs.GetString($"{0 + i}", "Locked");
             }
             if (lockImages[i].enabled)
             {
@@ -68,7 +73,7 @@ public class Levels : MonoBehaviour
                 lockImages[SceneManager.GetActiveScene().buildIndex + 1].enabled = false;
                 levelButtons[SceneManager.GetActiveScene().buildIndex + 1].interactable = true;
             }
-            PlayerPrefs.SetString($"{SceneManager.GetActiveScene().buildIndex + 1}", "UnLocked");
+            PlayerPrefs.SetString($"{SceneManager.GetActiveScene().buildIndex + 1}", "Unlocked");
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             Time.timeScale = 1;
@@ -78,6 +83,7 @@ public class Levels : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void Back()

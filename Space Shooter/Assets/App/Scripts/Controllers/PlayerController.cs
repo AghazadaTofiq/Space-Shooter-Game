@@ -24,29 +24,67 @@ public class PlayerController : MonoBehaviour
 
     private float shootTimer;
 
+
+#if UNITY_EDITOR
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * PlayerPrefs.GetFloat("Speed", 7), 0);
+        rb.velocity = new Vector2(Input.GetAxis("Horizontal") * PlayerPrefs.GetFloat("Speed", 100) * Time.fixedDeltaTime, 0);
 
-        shootTimer += Time.fixedDeltaTime;
+        shootTimer += Time.deltaTime;
 
-        if (shootTimer > PlayerPrefs.GetFloat("Bullet", 2))
+        if (shootTimer > PlayerPrefs.GetFloat("Bullet", 2f))
         {
             shootTimer = 0f;
             shootMusic.PlayOneShot(shootSound);
             Instantiate(bulletPrefab, muzzle.position, Quaternion.identity);
         }
     }
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
+    private void FixedUpdate()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Stationary)
+            {
+                if (touch.position.x > Screen.width / 2)
+                {
+                    rb.velocity = new Vector2(PlayerPrefs.GetFloat("Speed", 100) * Time.fixedDeltaTime, 0);
+                }
+                if (touch.position.x < Screen.width / 2)
+                {
+                    rb.velocity = new Vector2(-PlayerPrefs.GetFloat("Speed", 100) * Time.fixedDeltaTime, 0);
+                }
+            }
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
+
+        shootTimer += Time.fixedDeltaTime;
+
+        if (shootTimer > PlayerPrefs.GetFloat("Bullet", 2f))
+        {
+            shootTimer = 0f;
+            shootMusic.PlayOneShot(shootSound);
+            Instantiate(bulletPrefab, muzzle.position, Quaternion.identity);
+        }
+    }
+#endif
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("EnemyBullet") || other.CompareTag("Meteors"))
+        if (other.CompareTag("EnemyBullet") || other.CompareTag("Meteors"))
         {
             StartCoroutine(ReSpawn());
             Destroy(other.gameObject);
             lives--;
             livesLabel.text = "Lives " + lives.ToString();
-            if(lives == 0)
+            if (lives == 0)
             {
                 UIManager.Instance.gameOver.GetComponent<Image>().color = UIManager.Instance.red;
                 UIManager.Instance.gameOver.SetActive(true);
@@ -54,7 +92,7 @@ public class PlayerController : MonoBehaviour
                 Time.timeScale = 0;
             }
         }
-        if(other.CompareTag("Hearts"))
+        if (other.CompareTag("Hearts"))
         {
             Destroy(other.gameObject);
             lives++;
